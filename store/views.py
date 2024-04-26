@@ -11,7 +11,7 @@ from django import forms
 
 def product(request,pk):
     product = Product.objects.get(id=pk)
-    return render(request, 'product.html',{'products':product})
+    return render(request, 'product.html',{'product':product})
 
 
 def home(request):
