@@ -1,13 +1,49 @@
+import requests
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Product 
+from .models import Category, Product
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django import forms
+from .utils import get_weather
 
 # Create your views here.
+
+
+
+
+
+def get_weather(city):
+    api_key = '533ac5d37a4fe7dc36dd522b6188abcf'
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+    response = requests.get(url)
+    data = response.json()
+    return data
+
+
+
+
+
+
+
+def category(request, foo):
+    # replace hypenation with spaces 
+    foo = foo.replace('-', ' ')
+    try:
+        category = Category.objects.get(name=foo)
+        products = Product.objects.filter(category=category)
+        return render(request, 'category.html','products:products}', {'category': category})
+    except:
+        messages.success(request, ("This category doesnt exist! BOO HOO"))
+        return redirect('home')
+
+
+
+
 
 def product(request,pk):
     product = Product.objects.get(id=pk)
@@ -19,7 +55,8 @@ def home(request):
     return render(request, 'home.html',{'products':products})
 
 def about(request):
-    return render(request, 'about.html',{})
+    weather= get_weather(city='London')
+    return render(request, 'about.html',{'weather':weather})
 
 def login_user(request):
     if request.method == "POST":

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <header class="bg-dark py-5" style="background-image: url('/Users/jonathanerasmusdavies/ecom/ecom/media/uploads/products/images-2'); background-size: cover; background-position: center;">
@@ -17,6 +18,14 @@
             <p>We specialize in a wide range of products including electronics, clothing, accessories, and more. With a focus on customer satisfaction, we aim to create a seamless shopping experience for our valued customers.</p>
             <p>At Jonathan's Store, we believe in transparency, integrity, and innovation. We continuously strive to improve and expand our product offerings to meet the evolving needs of our customers.</p>
             <p>Thank you for choosing Jonathan's Store for all your shopping needs. We look forward to serving you!</p>
+
+            {% if weather %}
+            <h2>Weather in {{ weather.name }}</h2>
+            <h1>Temperature: {{ weather.main.temp }} K which is Celsius = Kelvin - 273.15</h1>
+            {% else %}
+            <p>Unable to retrieve weather information.</p>
+            {% endif %}
+          
         </div>
     </div>
 </div>
